@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Liu's Uncertainty Theory</title>
-  <meta name="description" content="A public mirror of the Uncertainty Theory modules from mathlib4 PR #35976.">
+  <meta name="description" content="A public scholarly mirror and presentation site for the Uncertainty Theory modules from mathlib4 PR #35976.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
@@ -394,10 +394,32 @@
     }
 
     .panel ul,
+    .panel ol,
     .modules ul,
     .flow ol {
       margin: 0;
       padding-left: 1.15rem;
+    }
+
+    .panel pre,
+    .flow pre {
+      margin: 12px 0 0;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(23, 20, 16, 0.06);
+      overflow-x: auto;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.84rem;
+      line-height: 1.65;
+      color: var(--ink);
+      white-space: pre-wrap;
+    }
+
+    .triptych {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
     }
 
     .modules-grid {
@@ -481,6 +503,7 @@
     @media (max-width: 980px) {
       .hero,
       .bilingual,
+      .triptych,
       .modules-grid,
       .flow-grid,
       .footer {
@@ -549,22 +572,23 @@
         </div>
       </div>
       <nav class="nav-links">
+        <a href="#about">About</a>
+        <a href="#citation">Citation</a>
+        <a href="#references">References</a>
         <a href="https://github.com/Phelixh/Liu-Uncertainty-Theory">Repository</a>
-        <a href="https://github.com/leanprover-community/mathlib4/pull/35976">PR #35976</a>
-        <a href="https://github.com/Phelixh/mathlib4/tree/feat/uncertainty-pr/Mathlib/Uncertainty">Source Branch</a>
       </nav>
     </header>
 
     <section class="hero">
       <div class="hero-main">
         <div>
-          <div class="eyebrow">Bilingual Mirror for Lean Formalization</div>
+          <div class="eyebrow">Public Scholarly Mirror</div>
           <h1>Liu's Uncertainty Theory</h1>
           <p>
-            A compact public mirror of the Uncertainty Theory modules developed for
-            mathlib4 PR #35976. This repository is designed for browsing, sharing,
-            and tracking the current synchronized snapshot without requiring a full
-            mathlib4 checkout.
+            A public scholarly mirror and presentation site for the selected
+            Uncertainty Theory modules developed in mathlib4 PR #35976. The
+            repository is maintained as an archival, citation-friendly, and
+            lightweight record of the current synchronized Lean source snapshot.
           </p>
           <div class="hero-actions">
             <a class="button primary" href="https://github.com/Phelixh/Liu-Uncertainty-Theory">Open Repository</a>
@@ -578,8 +602,8 @@
             <strong class="mono">3f9f9f7af495242fcd38ec08fb67512a28c02fd4</strong>
           </div>
           <div class="metric">
-            <span>Source Branch</span>
-            <strong class="mono">feat/uncertainty-pr</strong>
+            <span>Curated Scope</span>
+            <strong>6 mirrored Lean files</strong>
           </div>
           <div class="metric">
             <span>CI Status</span>
@@ -590,10 +614,11 @@
 
       <aside class="hero-side">
         <div>
-          <h2>Snapshot</h2>
+          <h2>Repository Record</h2>
           <p>
-            This site reflects the current mirrored state of the selected
-            Uncertainty modules and is intended as a lightweight public entry page.
+            This site presents the current mirrored state of the selected
+            Uncertainty modules for academic reference, public dissemination,
+            and snapshot provenance tracking.
           </p>
         </div>
         <div class="stack">
@@ -609,18 +634,21 @@
             <span class="card-label">Latest Mirrored Source Commit</span>
             <span class="card-value mono">3f9f9f7af495242fcd38ec08fb67512a28c02fd4</span>
           </div>
+          <div class="card">
+            <span class="card-label">Repository Role</span>
+            <span class="card-value">Archival mirror and public-facing presentation layer</span>
+          </div>
           <div class="status">Checks completed successfully</div>
         </div>
       </aside>
     </section>
 
-    <section class="section">
+    <section class="section" id="about">
       <div class="section-head">
         <div>
-          <h2>中文 / English</h2>
+          <h2>About / 项目说明</h2>
           <p>
-            A short bilingual overview for visitors who want to understand what this
-            repository contains and why it exists.
+            A formal statement of scope, scholarly role, and repository purpose.
           </p>
         </div>
       </div>
@@ -628,25 +656,93 @@
         <article class="panel">
           <h3>中文说明</h3>
           <p>
-            本仓库是 mathlib4 PR #35976 中 Uncertainty Theory 相关模块的公开镜像，用于更轻量地展示、分享和记录当前同步快照。
+            本仓库作为 mathlib4 PR #35976 中不确定理论相关 Lean 源文件的公开学术镜像进行维护，旨在为对外展示、版本留档与学术引用提供稳定而轻量的快照载体。
           </p>
           <ul>
-            <li>适合快速浏览不确定理论相关 Lean 模块</li>
-            <li>用于记录当前镜像对应的上游 PR 提交</li>
-            <li>不是完整的 mathlib4 仓库替代品</li>
+            <li>适用于公开展示与学术说明</li>
+            <li>用于记录当前镜像对应的上游提交来源</li>
+            <li>不替代完整的 mathlib4 开发环境</li>
           </ul>
         </article>
         <article class="panel">
           <h3>English Overview</h3>
           <p>
-            This repository is a public mirror of the Uncertainty Theory modules from
-            mathlib4 PR #35976, intended for easier browsing and stable snapshot sharing.
+            This repository is maintained as a public scholarly mirror of the
+            Uncertainty Theory modules from mathlib4 PR #35976, intended for
+            archival presentation, stable citation, and lightweight public access.
           </p>
           <ul>
-            <li>Browse the relevant Lean modules without the full mathlib4 history</li>
-            <li>Track which upstream PR commit is mirrored here</li>
-            <li>Use the upstream branch for full in-context compilation</li>
+            <li>Supports scholarly reference and snapshot provenance</li>
+            <li>Provides a compact view of the selected Lean sources</li>
+            <li>Defers full development and compilation to the upstream branch</li>
           </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="citation">
+      <div class="section-head">
+        <div>
+          <h2>Citation / 引用建议</h2>
+          <p>
+            Suggested wording and bibliographic metadata for referring to this
+            mirror in articles, notes, talks, and project documentation.
+          </p>
+        </div>
+      </div>
+      <div class="flow-grid">
+        <article class="flow">
+          <h3>Recommended Citation</h3>
+          <p>
+            Cite this repository as a public mirror of the Uncertainty Theory
+            modules from mathlib4 PR #35976, together with the mirrored source
+            commit recorded on this site.
+          </p>
+          <p>
+            建议将本仓库描述为 mathlib4 PR #35976 中 Uncertainty Theory 模块的公开镜像，并同时注明当前镜像 source commit。
+          </p>
+        </article>
+        <article class="flow">
+          <h3>BibTeX</h3>
+          <pre>@misc{gao2026liuuncertaintytheory,
+  author       = {Fei Gao},
+  title        = {Liu's Uncertainty Theory},
+  year         = {2026},
+  howpublished = {\url{https://github.com/Phelixh/Liu-Uncertainty-Theory}},
+  note         = {Public mirror of the Uncertainty Theory modules from mathlib4 PR \#35976; mirrored source commit 3f9f9f7af495242fcd38ec08fb67512a28c02fd4; accessed 2026-04-16}
+}</pre>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="references">
+      <div class="section-head">
+        <div>
+          <h2>References / 参考文献</h2>
+          <p>
+            Background references for the underlying uncertainty-theory literature
+            and the upstream formalization source.
+          </p>
+        </div>
+      </div>
+      <div class="triptych">
+        <article class="panel">
+          <h3>Primary Text</h3>
+          <ol>
+            <li>Liu, B. (2026). <em>Uncertainty Theory</em> (5th ed.). Uncertainty Theory Laboratory.</li>
+          </ol>
+        </article>
+        <article class="panel">
+          <h3>Secondary Text</h3>
+          <ol>
+            <li>Liu, B. (2015). <em>Uncertainty Theory</em> (4th ed.). Springer Berlin, Heidelberg.</li>
+          </ol>
+        </article>
+        <article class="panel">
+          <h3>Formalization Source</h3>
+          <ol>
+            <li>leanprover-community. <em>mathlib4 pull request #35976</em>.</li>
+          </ol>
         </article>
       </div>
     </section>
@@ -654,10 +750,10 @@
     <section class="section">
       <div class="section-head">
         <div>
-          <h2>Mirrored Modules</h2>
+          <h2>Mirrored Corpus / 镜像内容</h2>
           <p>
-            The repository intentionally keeps a small curated subset of files that
-            represent the Uncertainty Theory layer under discussion in the PR.
+            The repository intentionally preserves a small curated subset of files
+            representing the Uncertainty Theory layer under discussion in the PR.
           </p>
         </div>
       </div>
@@ -692,16 +788,17 @@
     <section class="section">
       <div class="section-head">
         <div>
-          <h2>Sync Workflow</h2>
+          <h2>Synchronization Policy / 同步方式</h2>
           <p>
-            This site and repository are maintained by mirroring the selected files
-            from the upstream PR branch and then refreshing the recorded source head.
+            The mirror is maintained by updating the upstream PR checkout,
+            copying the selected files into this repository, and refreshing the
+            recorded source provenance.
           </p>
         </div>
       </div>
       <div class="flow-grid">
         <article class="flow">
-          <h3>Typical Procedure</h3>
+          <h3>Maintenance Procedure</h3>
           <ol>
             <li>Update <code>Phelixh/mathlib4</code> on <code>feat/uncertainty-pr</code>.</li>
             <li>Copy the mirrored files into this repository.</li>
@@ -722,11 +819,12 @@
 
     <footer class="footer">
       <div>
-        <strong>Publishing Note</strong>
+        <strong>Scholarly Note</strong>
         <p>
-          This homepage is stored in <code>docs/index.html</code> and is ready for GitHub
-          Pages publishing from the repository. The repository content itself remains a
-          lightweight mirror of the upstream Uncertainty modules.
+          This homepage is stored in <code>docs/index.html</code> and is intended as the
+          public-facing presentation layer of the repository. For scholarly use,
+          cite the mirror for snapshot provenance and cite the primary literature
+          for theoretical content.
         </p>
       </div>
       <div class="footer-links">
