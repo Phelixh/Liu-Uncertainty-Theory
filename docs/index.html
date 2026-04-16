@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Liu's Uncertainty Theory</title>
+  <meta name="description" content="A public mirror of the Uncertainty Theory modules from mathlib4 PR #35976.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f4efe6;
+      --ink: #1c1a17;
+      --muted: #5d564f;
+      --line: rgba(28, 26, 23, 0.12);
+      --panel: rgba(255, 250, 242, 0.76);
+      --gold: #c88a2d;
+      --teal: #0f766e;
+      --teal-soft: #d9f2ee;
+      --shadow: 0 24px 60px rgba(33, 28, 22, 0.12);
+      --radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Manrope", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(200, 138, 45, 0.18), transparent 28%),
+        radial-gradient(circle at 85% 12%, rgba(15, 118, 110, 0.14), transparent 22%),
+        linear-gradient(180deg, #f7f3eb 0%, #efe7da 100%);
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(28, 26, 23, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(28, 26, 23, 0.03) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.5), transparent 90%);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      position: relative;
+      width: min(1160px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 64px;
+    }
+
+    .nav,
+    .hero,
+    .section,
+    .footer {
+      animation: rise 0.8s ease both;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 252, 247, 0.74);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 10px 30px rgba(33, 28, 22, 0.06);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .mark {
+      display: inline-grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--gold), #f0c06f);
+      color: #1b160f;
+      font-family: "Playfair Display", serif;
+      font-size: 1.1rem;
+      font-weight: 800;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
+
+    .brand-copy {
+      min-width: 0;
+    }
+
+    .brand-copy strong {
+      display: block;
+      font-size: 0.98rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .brand-copy span {
+      display: block;
+      font-size: 0.77rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-links a {
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.56);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+      gap: 22px;
+      align-items: stretch;
+      margin-bottom: 22px;
+    }
+
+    .hero-main,
+    .hero-side,
+    .section,
+    .footer {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero-main {
+      position: relative;
+      padding: 34px;
+      min-height: 480px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background:
+        radial-gradient(circle at top right, rgba(15, 118, 110, 0.12), transparent 24%),
+        radial-gradient(circle at 18% 10%, rgba(200, 138, 45, 0.18), transparent 28%),
+        linear-gradient(180deg, rgba(255, 250, 242, 0.94), rgba(245, 236, 224, 0.92));
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      width: fit-content;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: rgba(15, 118, 110, 0.1);
+      color: var(--teal);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 18px 0 14px;
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2.6rem, 6vw, 5.2rem);
+      line-height: 0.96;
+      letter-spacing: -0.03em;
+      max-width: 9ch;
+    }
+
+    .hero-main p {
+      margin: 0;
+      max-width: 60ch;
+      font-size: 1.03rem;
+      line-height: 1.72;
+      color: var(--muted);
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 18px;
+      border-radius: 16px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button.primary {
+      background: linear-gradient(135deg, #1d3d39, var(--teal));
+      color: #f6fbfa;
+      box-shadow: 0 14px 34px rgba(15, 118, 110, 0.25);
+    }
+
+    .button.secondary {
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid var(--line);
+      color: var(--ink);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .metric {
+      padding: 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(28, 26, 23, 0.08);
+      background: rgba(255, 255, 255, 0.68);
+    }
+
+    .metric span {
+      display: block;
+      font-size: 0.76rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 1.04rem;
+      line-height: 1.4;
+    }
+
+    .hero-side {
+      padding: 24px;
+      display: grid;
+      gap: 16px;
+      background:
+        linear-gradient(180deg, rgba(20, 23, 29, 0.96), rgba(28, 32, 40, 0.96)),
+        linear-gradient(135deg, rgba(15, 118, 110, 0.2), transparent 60%);
+      color: #eff2f7;
+    }
+
+    .hero-side h2,
+    .section h2 {
+      margin: 0 0 12px;
+      font-family: "Playfair Display", serif;
+      font-size: 1.7rem;
+      letter-spacing: -0.02em;
+    }
+
+    .stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .card {
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .card-label {
+      display: block;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      opacity: 0.7;
+      margin-bottom: 8px;
+    }
+
+    .card-value {
+      display: block;
+      font-size: 1rem;
+      line-height: 1.55;
+    }
+
+    .mono {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.92rem;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      width: fit-content;
+      background: rgba(72, 194, 157, 0.14);
+      color: #9cf4cf;
+      border: 1px solid rgba(72, 194, 157, 0.2);
+      font-weight: 700;
+    }
+
+    .status::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #7df2c1;
+      box-shadow: 0 0 18px rgba(125, 242, 193, 0.8);
+    }
+
+    .section {
+      margin-top: 22px;
+      padding: 28px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .section-head p {
+      margin: 0;
+      max-width: 62ch;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .bilingual {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .panel {
+      padding: 20px;
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.62);
+    }
+
+    .panel h3,
+    .modules h3,
+    .flow h3 {
+      margin: 0 0 10px;
+      font-size: 1.12rem;
+      letter-spacing: -0.02em;
+    }
+
+    .panel p,
+    .panel li,
+    .modules p,
+    .flow p,
+    .footer p {
+      color: var(--muted);
+      line-height: 1.72;
+    }
+
+    .panel ul,
+    .modules ul,
+    .flow ol {
+      margin: 0;
+      padding-left: 1.15rem;
+    }
+
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .modules {
+      padding: 18px;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.58);
+    }
+
+    .modules code,
+    .flow code,
+    .panel code,
+    .footer code {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.9rem;
+      background: rgba(23, 20, 16, 0.06);
+      padding: 2px 6px;
+      border-radius: 8px;
+    }
+
+    .flow-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 16px;
+    }
+
+    .flow {
+      padding: 22px;
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.64);
+    }
+
+    .footer {
+      margin-top: 22px;
+      padding: 24px 28px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .footer strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 1rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .footer-links a {
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.68);
+      font-weight: 700;
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .bilingual,
+      .modules-grid,
+      .flow-grid,
+      .footer {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-main {
+        min-height: auto;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-links {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: min(100% - 20px, 1160px);
+        padding-top: 12px;
+      }
+
+      .nav {
+        border-radius: 28px;
+        padding: 14px;
+      }
+
+      .nav,
+      .section,
+      .footer,
+      .hero-main,
+      .hero-side {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .hero-main,
+      .hero-side,
+      .section,
+      .footer {
+        border-radius: 22px;
+      }
+
+      h1 {
+        max-width: none;
+      }
+
+      .section-head {
+        align-items: start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="nav">
+      <div class="brand">
+        <div class="mark">L</div>
+        <div class="brand-copy">
+          <strong>Liu's Uncertainty Theory</strong>
+          <span>mathlib4 PR #35976 mirror</span>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="https://github.com/Phelixh/Liu-Uncertainty-Theory">Repository</a>
+        <a href="https://github.com/leanprover-community/mathlib4/pull/35976">PR #35976</a>
+        <a href="https://github.com/Phelixh/mathlib4/tree/feat/uncertainty-pr/Mathlib/Uncertainty">Source Branch</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-main">
+        <div>
+          <div class="eyebrow">Bilingual Mirror for Lean Formalization</div>
+          <h1>Liu's Uncertainty Theory</h1>
+          <p>
+            A compact public mirror of the Uncertainty Theory modules developed for
+            mathlib4 PR #35976. This repository is designed for browsing, sharing,
+            and tracking the current synchronized snapshot without requiring a full
+            mathlib4 checkout.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="https://github.com/Phelixh/Liu-Uncertainty-Theory">Open Repository</a>
+            <a class="button secondary" href="https://github.com/leanprover-community/mathlib4/pull/35976">View Upstream PR</a>
+          </div>
+        </div>
+
+        <div class="hero-grid">
+          <div class="metric">
+            <span>Current Source Head</span>
+            <strong class="mono">3f9f9f7af495242fcd38ec08fb67512a28c02fd4</strong>
+          </div>
+          <div class="metric">
+            <span>Source Branch</span>
+            <strong class="mono">feat/uncertainty-pr</strong>
+          </div>
+          <div class="metric">
+            <span>CI Status</span>
+            <strong>All checks green on current PR head</strong>
+          </div>
+        </div>
+      </div>
+
+      <aside class="hero-side">
+        <div>
+          <h2>Snapshot</h2>
+          <p>
+            This site reflects the current mirrored state of the selected
+            Uncertainty modules and is intended as a lightweight public entry page.
+          </p>
+        </div>
+        <div class="stack">
+          <div class="card">
+            <span class="card-label">Upstream PR</span>
+            <span class="card-value"><a href="https://github.com/leanprover-community/mathlib4/pull/35976">leanprover-community/mathlib4#35976</a></span>
+          </div>
+          <div class="card">
+            <span class="card-label">Mirror Repository</span>
+            <span class="card-value"><a href="https://github.com/Phelixh/Liu-Uncertainty-Theory">Phelixh/Liu-Uncertainty-Theory</a></span>
+          </div>
+          <div class="card">
+            <span class="card-label">Latest Mirrored Source Commit</span>
+            <span class="card-value mono">3f9f9f7af495242fcd38ec08fb67512a28c02fd4</span>
+          </div>
+          <div class="status">Checks completed successfully</div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>中文 / English</h2>
+          <p>
+            A short bilingual overview for visitors who want to understand what this
+            repository contains and why it exists.
+          </p>
+        </div>
+      </div>
+      <div class="bilingual">
+        <article class="panel">
+          <h3>中文说明</h3>
+          <p>
+            本仓库是 mathlib4 PR #35976 中 Uncertainty Theory 相关模块的公开镜像，用于更轻量地展示、分享和记录当前同步快照。
+          </p>
+          <ul>
+            <li>适合快速浏览不确定理论相关 Lean 模块</li>
+            <li>用于记录当前镜像对应的上游 PR 提交</li>
+            <li>不是完整的 mathlib4 仓库替代品</li>
+          </ul>
+        </article>
+        <article class="panel">
+          <h3>English Overview</h3>
+          <p>
+            This repository is a public mirror of the Uncertainty Theory modules from
+            mathlib4 PR #35976, intended for easier browsing and stable snapshot sharing.
+          </p>
+          <ul>
+            <li>Browse the relevant Lean modules without the full mathlib4 history</li>
+            <li>Track which upstream PR commit is mirrored here</li>
+            <li>Use the upstream branch for full in-context compilation</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Mirrored Modules</h2>
+          <p>
+            The repository intentionally keeps a small curated subset of files that
+            represent the Uncertainty Theory layer under discussion in the PR.
+          </p>
+        </div>
+      </div>
+      <div class="modules-grid">
+        <article class="modules">
+          <h3><code>Mathlib.lean</code></h3>
+          <p>Import snapshot file copied from the source tree.</p>
+        </article>
+        <article class="modules">
+          <h3><code>BaseCore.lean</code></h3>
+          <p>Core structures and bridge definitions for the uncertainty layer.</p>
+        </article>
+        <article class="modules">
+          <h3><code>BaseDistribution.lean</code></h3>
+          <p>Distribution-side interfaces, formulas, and special families.</p>
+        </article>
+        <article class="modules">
+          <h3><code>BaseProcess.lean</code></h3>
+          <p>Process-level structures, renewal updates, and Euler-scheme interfaces.</p>
+        </article>
+        <article class="modules">
+          <h3><code>Base.lean</code></h3>
+          <p>Aggregate module importing the three base uncertainty modules.</p>
+        </article>
+        <article class="modules">
+          <h3><code>Uncertainty.lean</code></h3>
+          <p>Top-level public module for the uncertainty namespace.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Sync Workflow</h2>
+          <p>
+            This site and repository are maintained by mirroring the selected files
+            from the upstream PR branch and then refreshing the recorded source head.
+          </p>
+        </div>
+      </div>
+      <div class="flow-grid">
+        <article class="flow">
+          <h3>Typical Procedure</h3>
+          <ol>
+            <li>Update <code>Phelixh/mathlib4</code> on <code>feat/uncertainty-pr</code>.</li>
+            <li>Copy the mirrored files into this repository.</li>
+            <li>Review the diff and refresh the recorded source commit.</li>
+            <li>Commit and push to <code>main</code>.</li>
+          </ol>
+        </article>
+        <article class="flow">
+          <h3>Current Provenance</h3>
+          <p>
+            Source branch: <code>feat/uncertainty-pr</code><br>
+            Source head: <code>3f9f9f7af495242fcd38ec08fb67512a28c02fd4</code><br>
+            Status: current head checks are green
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div>
+        <strong>Publishing Note</strong>
+        <p>
+          This homepage is stored in <code>docs/index.html</code> and is ready for GitHub
+          Pages publishing from the repository. The repository content itself remains a
+          lightweight mirror of the upstream Uncertainty modules.
+        </p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/Phelixh/Liu-Uncertainty-Theory#readme">Readme</a>
+        <a href="https://github.com/Phelixh/Liu-Uncertainty-Theory/tree/main/docs">Docs Folder</a>
+        <a href="https://github.com/Phelixh/mathlib4/tree/feat/uncertainty-pr/Mathlib/Uncertainty">Source Files</a>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

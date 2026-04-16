@@ -26,8 +26,8 @@
 
 本仓库当前代码对应的上游 PR 快照为：
 
-- Source commit: `5621a1c81ff9c6b1ab25afe12af40ba67180054e`
-- Source commit message: `fix(Uncertainty): align normal inverse and demote examples`
+- Source commit: `3f9f9f7af495242fcd38ec08fb67512a28c02fd4`
+- Source commit message: `Merge branch 'master' into feat/uncertainty-pr`
 
 仓库中的镜像代码文件已经与上述上游提交保持一致。如果 PR 分支后续继续推进，则需要再次同步代码并更新本 README 中记录的提交信息。
 
@@ -101,8 +101,8 @@ This repository is a snapshot mirror, not a replacement for the full mathlib4 re
 
 The code in this repository currently mirrors the following upstream PR snapshot:
 
-- Source commit: `5621a1c81ff9c6b1ab25afe12af40ba67180054e`
-- Source commit message: `fix(Uncertainty): align normal inverse and demote examples`
+- Source commit: `3f9f9f7af495242fcd38ec08fb67512a28c02fd4`
+- Source commit message: `Merge branch 'master' into feat/uncertainty-pr`
 
 The mirrored code files in this repository are aligned with that upstream commit. If the PR branch moves forward, this repository should be resynchronized and this README should be updated accordingly.
 
